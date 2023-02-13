@@ -6,17 +6,18 @@ module.exports = {
   ],
   theme: {
     extend: {
-        height: {
-
-        },
         maxWidth: {
             "2700": "168.75rem",
-            "247": "13rem"
+            "247": "13rem",
+            "320px": "16rem"
+        },
+        width: {
+            "500px": "31.25rem",
         },
         colors: {
-            "background": "#343A40",
-            "afterBackground": "#71717A",
-            "lightGrey": "#494E53"
+            "city-green": "#e8ff01",
+            "city-blue": "#2a43ff",
+            "modalBg": "#000000a1"
         },
         zIndex: {
             '2': '2'
