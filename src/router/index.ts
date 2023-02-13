@@ -28,17 +28,10 @@ const router = createRouter({
       component: () => import('../views/VerPostagens.vue')
     },
     {
-      path: '/criar-postagem',
-      name: 'Criar-postagem',
-    //   beforeEnter: (to, from ,next) => {
-    //     const token = localStorage.getItem("token");
-
-    //     if(!token) {
-    //         return next('/auth/login')
-    //     } else next();
-    //   },
-      component: () => import('../views/CriarPostagem.vue')
-    }
+        path: "/auth/login",
+        name: "login",
+        component: () => import('../views/AuthLogin.vue')
+    },
   ]
 })
 
