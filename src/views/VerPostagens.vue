@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import { onMounted, ref } from "vue";
     const allPosts = ref<Array<iPostAttributes>>([]);
-    let func = "";
 
     interface iPostAttributes {
         _id?: string,
@@ -15,7 +14,7 @@
         requestPosts();
     });
 
-    function modalController(func: string, id: string) {
+    async function modalController(func: string, id: string) {
         const form = (document.querySelector("#postForm") as HTMLFormElement);
 
         openModal();
@@ -30,6 +29,12 @@
             }
         } else if(func == "updatePost") {
             (document.querySelector("#formTitle") as HTMLTitleElement).textContent = "Atualizar postagem";
+            const allPosts = await requestPosts();
+            const post = allPosts.filter((el: { _id: string; }) => el._id == id);
+
+            (document.querySelector("#title") as HTMLInputElement).value = post[0].title;
+            (document.querySelector("#shortDescription") as HTMLInputElement).value = post[0].shortDescription;
+            (document.querySelector("#description") as HTMLInputElement).value = post[0].description;
 
             form.onsubmit = (e) => {
                 updatePost(id);
@@ -67,6 +72,8 @@
             for(let i of response) {
                 allPosts.value.push(i);
             }
+
+            return response;
         } catch(err) {
             console.log({request_error: err});
         }
