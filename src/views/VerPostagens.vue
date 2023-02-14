@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import { onMounted, ref } from "vue";
     const allPosts = ref<Array<iPostAttributes>>([]);
-    let func = "";
 
     interface iPostAttributes {
         _id?: string,
@@ -15,7 +14,7 @@
         requestPosts();
     });
 
-    function modalController(func: string, id: string) {
+    async function modalController(func: string, id: string) {
         const form = (document.querySelector("#postForm") as HTMLFormElement);
 
         openModal();
@@ -30,6 +29,12 @@
             }
         } else if(func == "updatePost") {
             (document.querySelector("#formTitle") as HTMLTitleElement).textContent = "Atualizar postagem";
+            const allPosts = await requestPosts();
+            const post = allPosts.filter((el: { _id: string; }) => el._id == id);
+
+            (document.querySelector("#title") as HTMLInputElement).value = post[0].title;
+            (document.querySelector("#shortDescription") as HTMLInputElement).value = post[0].shortDescription;
+            (document.querySelector("#description") as HTMLInputElement).value = post[0].description;
 
             form.onsubmit = (e) => {
                 updatePost(id);
@@ -67,6 +72,8 @@
             for(let i of response) {
                 allPosts.value.push(i);
             }
+
+            return response;
         } catch(err) {
             console.log({request_error: err});
         }
@@ -173,7 +180,12 @@
         </header>
 
         <main class="flex flex-col justify-center items-center w-full h-screen relative">
-            <div class="bg-gray-300 relative -z-0 w-5/6 h-4/6 border border-gray-400 shadow-md px-5 py-5 rounded-lg">
+            <div class="bg-gray-300 relative -z-0 w-5/6 h-4/6 border border-gray-400 shadow-md px-5 py-5 pt-10 rounded-lg">
+                <div class="w-full h-10 absolute top-0 left-0 flex items-center justify-between uppercase text-black font-bold px-24">
+                    <div class=""><p>Titulo</p></div>
+                    <div class=""><p>Descrição</p></div>
+                    <div class=""><p>Ferramentas</p></div>
+                </div>
                 <div class="w-full h-full bg-white overflow-auto p-2 pb-0">
                     <div v-for="(post, index) of allPosts.reverse()" :key="index" class="flex flex-wrap items-center justify-between px-6 py-7 border-2 mb-2">
                         <div class="w-full max-w-320px">
