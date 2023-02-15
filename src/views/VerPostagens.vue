@@ -2,6 +2,8 @@
     import { onMounted, ref } from "vue";
     const allPosts = ref<Array<iPostAttributes>>([]);
 
+    console.log(allPosts.value);
+
     interface iPostAttributes {
         _id?: string,
         title?: string,
@@ -29,12 +31,11 @@
             }
         } else if(func == "updatePost") {
             (document.querySelector("#formTitle") as HTMLTitleElement).textContent = "Atualizar postagem";
-            const allPosts = await requestPosts();
-            const post = allPosts.filter((el: { _id: string; }) => el._id == id);
+            const post = allPosts.value.filter(el => el._id == id);
 
-            (document.querySelector("#title") as HTMLInputElement).value = post[0].title;
-            (document.querySelector("#shortDescription") as HTMLInputElement).value = post[0].shortDescription;
-            (document.querySelector("#description") as HTMLInputElement).value = post[0].description;
+            (document.querySelector("#title") as HTMLInputElement).value = post[0].title as string;
+            (document.querySelector("#shortDescription") as HTMLInputElement).value = post[0].shortDescription as string;
+            (document.querySelector("#description") as HTMLTextAreaElement).value = post[0].description as string;
 
             form.onsubmit = (e) => {
                 updatePost(id);
