@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-    import { onMounted, ref } from "vue";
+    import { defineSSRCustomElement, onMounted, ref } from "vue";
     const allPosts = ref<Array<iPostAttributes>>([]);
-
-    console.log(allPosts.value);
 
     interface iPostAttributes {
         _id?: string,
@@ -84,14 +82,16 @@
 
     async function makeRequestAtMethod(method: string, url: string) {
         const title = (document.querySelector("#title") as HTMLInputElement).value;
-        // const nameImage = (document.querySelector("#nameImage") as HTMLFieldSetElement);
+        const file = (document.querySelector("#nameImage") as HTMLInputElement).files;
         const shortDescription = (document.querySelector("#shortDescription") as HTMLInputElement).value;
         const description = (document.querySelector("#description") as HTMLTextAreaElement).value;
+        const formData = new FormData();
 
-
-        const newPost: iPostAttributes = {
-            nameImage: "imagem teste",
-        }
+        formData.append("title", title);
+        formData.append("file", file[0]);
+        formData.append("pictureName", file[0].name);
+        formData.append("shortDescription", shortDescription);
+        formData.append("description", description);
 
         if(title != "") {
             newPost.title = title;
@@ -106,14 +106,12 @@
         try {
             await fetch(url, {
                 method: method,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newPost)
+                body: formData
             })
-            .then(e => e.json());
+            .then(e => e.json())
+            .then(e => console.log(e))
 
-            location.reload();
+            // location.reload();
         }catch (err) {
             console.log({requests_error: err});
         }
@@ -221,7 +219,7 @@
                         <div class="w-full flex justify-center border-b border-gray-400 py-4">
                             <h1 id="formTitle" class="text-2xl"></h1>
                         </div>
-                        <form id="postForm" class="flex flex-col gap-3 mt-3">
+                        <form id="postForm" class="flex flex-col gap-3 mt-3" enctype="multipart/form-data">
                             <div class="">
                                 <label class="text-xl font-semibold block" for="titulo">Titulo</label>
                                 <input class="formNewPostInputs h-9 outline-none pl-3" type="text" name="" id="title" placeholder="Informe um título">
