@@ -87,20 +87,17 @@
         const description = (document.querySelector("#description") as HTMLTextAreaElement).value;
         const formData = new FormData();
 
-        formData.append("title", title);
         formData.append("file", file[0]);
         formData.append("pictureName", file[0].name);
-        formData.append("shortDescription", shortDescription);
-        formData.append("description", description);
 
         if(title != "") {
-            newPost.title = title;
+            formData.append("title", title);
         }
         if(shortDescription != "") {
-            newPost.shortDescription = shortDescription;
+            formData.append("shortDescription", shortDescription);
         }
         if(description != "") {
-            newPost.description = description;
+            formData.append("description", description);
         }
 
         try {
@@ -108,10 +105,9 @@
                 method: method,
                 body: formData
             })
-            .then(e => e.json())
-            .then(e => console.log(e))
+            .then(e => e.json());
 
-            // location.reload();
+            location.reload();
         }catch (err) {
             console.log({requests_error: err});
         }
