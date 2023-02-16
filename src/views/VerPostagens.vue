@@ -20,6 +20,7 @@
         openModal();
 
         if(func == "newPost") {
+            form.reset();
             (document.querySelector("#formTitle") as HTMLTitleElement).textContent = "Criar postagem";
 
             form.onsubmit = (e) => {
