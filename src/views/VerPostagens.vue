@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { defineSSRCustomElement, onMounted, ref } from "vue";
+    import { onMounted, ref } from "vue";
     const allPosts = ref<Array<iPostAttributes>>([]);
 
     interface iPostAttributes {
@@ -22,6 +22,10 @@
         if(func == "newPost") {
             form.reset();
             (document.querySelector("#formTitle") as HTMLTitleElement).textContent = "Criar postagem";
+            (document.querySelector("#title") as HTMLInputElement).required = true;
+            (document.querySelector("#nameImage") as HTMLInputElement).required = true;
+            (document.querySelector("#shortDescription") as HTMLInputElement).required = true;
+            (document.querySelector("#description") as HTMLTextAreaElement).required = true;
 
             form.onsubmit = (e) => {
                 registerNewPost();
@@ -41,6 +45,7 @@
 
                 e.preventDefault();
             }
+
         }
 
         return;
