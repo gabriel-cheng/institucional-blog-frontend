@@ -45,7 +45,6 @@
 
                 e.preventDefault();
             }
-
         }
 
         return;
@@ -93,9 +92,6 @@
         const description = (document.querySelector("#description") as HTMLTextAreaElement).value;
         const formData = new FormData();
 
-        formData.append("file", file[0]);
-        formData.append("pictureName", file[0].name);
-
         if(title != "") {
             formData.append("title", title);
         }
@@ -104,6 +100,9 @@
         }
         if(description != "") {
             formData.append("description", description);
+        }
+        if(file) {
+            formData.append("file", file[0]);
         }
 
         try {
