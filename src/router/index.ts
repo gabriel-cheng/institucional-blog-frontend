@@ -6,25 +6,25 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-    //   beforeEnter: (to, from ,next) => {
-    //     const token = localStorage.getItem("token");
+      beforeEnter: (to, from ,next) => {
+        const token = sessionStorage.getItem("token");
 
-    //     if(!token) {
-    //         return next('/auth/login')
-    //     } else next();
-    //   },
+        if(!token) {
+            return next('/auth/login')
+        } else next();
+      },
       component: () => import('../views/VerPostagens.vue')
     },
     {
       path: '/ver-postagens',
       name: 'Ver-postagens',
-    //   beforeEnter: (to, from ,next) => {
-    //     const token = localStorage.getItem("token");
+      beforeEnter: (to, from ,next) => {
+        const token = sessionStorage.getItem("token");
 
-    //     if(!token) {
-    //         return next('/auth/login')
-    //     } else next();
-    //   },
+        if(!token) {
+            return next('/auth/login')
+        } else next();
+      },
       component: () => import('../views/VerPostagens.vue')
     },
     {
