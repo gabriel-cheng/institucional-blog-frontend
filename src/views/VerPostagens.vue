@@ -92,6 +92,12 @@
         const description = (document.querySelector("#description") as HTMLTextAreaElement).value;
         const formData = new FormData();
 
+        if(!file) {
+            console.log({file_not_found: "Arquivo não encontrado!"});
+
+            return;
+        }
+
         if(title != "") {
             formData.append("title", title);
         }
@@ -103,6 +109,9 @@
         }
         if(file) {
             formData.append("file", file[0]);
+        }
+        if(method == "POST") {
+            formData.append("pictureName", file[0].name);
         }
 
         try {
@@ -227,7 +236,7 @@
                             </div>
                             <div class="">
                                 <label class="text-xl font-semibold block" for="capa">Imagem de capa</label>
-                                <input class="formNewPostInputs h-9 outline-none p-0.5 cursor-pointer" type="file" name="" id="nameImage">
+                                <input class="formNewPostInputs h-9 outline-none p-0.5 cursor-pointer" type="file" name="" id="nameImage" accept=".png, .PNG, .jpg, .jpeg">
                             </div>
                             <div class="">
                                 <label class="text-xl font-semibold block" for="descricaoCurta">Descrição curta</label>
