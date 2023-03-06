@@ -1,6 +1,8 @@
 <script lang="ts" setup>
     import { onMounted, ref } from "vue";
     const allPosts = ref<Array<iPostAttributes>>([]);
+    const token = sessionStorage.getItem("token");
+    const baseURL = import.meta.env.VITE_AUTH_BASEURL;
 
     interface iPostAttributes {
         _id?: string,
@@ -65,10 +67,8 @@
     }
 
     async function requestPosts() {
-        const url = "http://localhost:5000/posts";
-
         try {
-            const response = await fetch(url, {
+            const response = await fetch(`${baseURL}/posts`, {
                 method: "GET",
             })
             .then(e => e.json())
@@ -117,6 +117,9 @@
         try {
             await fetch(url, {
                 method: method,
+                headers: {
+                    authorization: `bearer ${token}`
+                },
                 body: formData
             })
             .then(e => e.json());
@@ -130,7 +133,7 @@
     }
 
     async function registerNewPost() {
-        const url = "http://localhost:5000/posts/register";
+        const url = `${baseURL}/posts/register`;
         try {
             await makeRequestAtMethod("POST", url);
             alert("Postagem criada com sucesso!");
@@ -142,7 +145,7 @@
     }
 
     async function updatePost(id: string) {
-        const url = `http://localhost:5000/posts/update/${id}`;
+        const url = `${baseURL}/posts/update/${id}`;
 
         try {
             await makeRequestAtMethod("PATCH", url);
@@ -158,13 +161,16 @@
     }
 
     async function deletePost(id: string) {
-        const url = `http://localhost:5000/posts/delete/${id}`
+        const url = `${baseURL}/posts/delete/${id}`
         const confirmacao = confirm("Prosseguir com a exclusão da postagem?");
 
         if(confirmacao) {
             try {
                 await fetch(url, {
                     method: "DELETE",
+                    headers: {
+                        authorization: `bearer ${token}`
+                    }
                 });
 
                 location.reload();
